@@ -1,0 +1,11 @@
+*.code_workspace
+*.json
+*/obj/*
+*/bin/*
+*.pyc
+*.class
+*.gch
+
+*.out
+comb.txt
+
