@@ -4,7 +4,7 @@
 using namespace std;
 
 int main() {
-	seven circut("abcdefgp", "anode");
+	seven circut("abcdefgh", "anode");
 	circut.print_table(11);
 
 	std::cout << std::hex;

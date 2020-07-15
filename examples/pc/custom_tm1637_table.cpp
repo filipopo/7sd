@@ -5,10 +5,12 @@
 using namespace std;
 
 int main() {
+    #ifndef min_res
     seven dev(TM1637);
 	cout << "Complete TM1637 table:" << endl;
 	dev.dev();
     cout << endl;
+    #endif
 
     // Table generated via dev() method
     uint8_t table_tm1637[] = {

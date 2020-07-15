@@ -34,20 +34,20 @@ void display::calculate(uint8_t *table) {
 	for (uint8_t i = 0; i < amount;i++) {
 		table_b[i] = 0;
 		for (uint8_t j = 0; j < 8;j++) {
-			bool b = 0;
+			bool b;
 			switch (order[j]) {
-				case 'a': b = (*(table + i) >> 7) & 1;break;
-				case 'b': b = (*(table + i) >> 6) & 1;break;
-				case 'c': b = (*(table + i) >> 5) & 1;break;
-				case 'd': b = (*(table + i) >> 4) & 1;break;
-				case 'e': b = (*(table + i) >> 3) & 1;break;
-				case 'f': b = (*(table + i) >> 2) & 1;break;
-				case 'g': b = (*(table + i) >> 1) & 1;break;
-				case 'p': b = (*(table + i) >> 0) & 1;break;
+				case 'a': b = (*(table + i) >> 0) & 1;break;
+				case 'b': b = (*(table + i) >> 1) & 1;break;
+				case 'c': b = (*(table + i) >> 2) & 1;break;
+				case 'd': b = (*(table + i) >> 3) & 1;break;
+				case 'e': b = (*(table + i) >> 4) & 1;break;
+				case 'f': b = (*(table + i) >> 5) & 1;break;
+				case 'g': b = (*(table + i) >> 6) & 1;break;
+				case 'h': b = (*(table + i) >> 7) & 1;break;
 			}
 
-			// Cathode values are just inverted anode values
-			if (mode == 'c')
+			// Anode values are just inverted cathode values
+			if (mode == 'a')
 				b = !b;
 
 			if (b)
@@ -56,7 +56,7 @@ void display::calculate(uint8_t *table) {
 	}
 
 	// Copies over our temporary matrix into the real one
-	memcpy(table, table_b, sizeof(table));
+	memcpy(table, table_b, sizeof(table_b));
 }
 #endif // min_res
 

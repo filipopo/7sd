@@ -7,11 +7,11 @@ using namespace std;
 int main() {
 	seven A;
 	A.print_table();
-	char s[100];
+	char s[50];
 	cout << endl << "Enter a message" << endl;
 	cin >> s;
 
-	uint8_t* msg = A.message((uint8_t *)s);
+	uint8_t *msg = A.message((uint8_t *)s);
 	std::cout << std::hex;
 	for (int i = 0; i < strlen((char *)msg); i++)
 		cout << "0x" << +msg[i] << endl;
