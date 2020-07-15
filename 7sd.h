@@ -10,10 +10,15 @@
 //#define min_res // Makes the library bare boned
 
 // Technically because table is a pointer in the display class any other classes aren't necessary
-#define seven_seg
+#ifndef min_res
+	#define seven_seg
+#endif // min_res
+
+#ifdef seven_seg
+	#define TM1637 "hgfedcba"
+#endif // seven_seg
 
 #define amount 63
-#define TM1637 "hgfedcba"
 
 class display {
 	uint8_t *table; // Pointer to an array containing conversion values
@@ -38,11 +43,11 @@ class display {
 		#endif // min_res
 
         // Converts a number into data that can be sent to the display
-		uint8_t number(uint8_t num);
+		uint8_t number(uint8_t num, bool hex = 0);
         // Converts a letter into data that can be sent to the display
 		uint8_t letter(char c);
         // Converts a string into an array of data that can be sent to the display
-		uint8_t *message(unsigned char *msg);
+		uint8_t *message(char *msg);
 
 		#ifdef Arduino_h
         // Sends data to the display
@@ -129,7 +134,7 @@ class seven : public display {
 		0b01001000, // x
 		0b01101110, // y
 		0b01001000, // z
-		0b00000000, // 62
+		0b00000000
 	};
 
 	public:
@@ -142,7 +147,7 @@ class seven : public display {
 
 class displays {
 	public:
-		displays(display dps[]);
+		displays(display *dps);
 };
 
 #endif // ssd_h

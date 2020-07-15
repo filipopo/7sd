@@ -36,14 +36,14 @@ void display::calculate(uint8_t *table) {
 		for (uint8_t j = 0; j < 8;j++) {
 			bool b;
 			switch (order[j]) {
-				case 'a': b = (*(table + i) >> 0) & 1;break;
-				case 'b': b = (*(table + i) >> 1) & 1;break;
-				case 'c': b = (*(table + i) >> 2) & 1;break;
-				case 'd': b = (*(table + i) >> 3) & 1;break;
-				case 'e': b = (*(table + i) >> 4) & 1;break;
-				case 'f': b = (*(table + i) >> 5) & 1;break;
-				case 'g': b = (*(table + i) >> 6) & 1;break;
-				case 'h': b = (*(table + i) >> 7) & 1;break;
+				case 'a': b = *(table + i) >> 0 & 1; break;
+				case 'b': b = *(table + i) >> 1 & 1; break;
+				case 'c': b = *(table + i) >> 2 & 1; break;
+				case 'd': b = *(table + i) >> 3 & 1; break;
+				case 'e': b = *(table + i) >> 4 & 1; break;
+				case 'f': b = *(table + i) >> 5 & 1; break;
+				case 'g': b = *(table + i) >> 6 & 1; break;
+				case 'h': b = *(table + i) >> 7 & 1; break;
 			}
 
 			// Anode values are just inverted cathode values
@@ -60,7 +60,14 @@ void display::calculate(uint8_t *table) {
 }
 #endif // min_res
 
-uint8_t display::number(uint8_t num) { 
+uint8_t display::number(uint8_t num, bool hex) {
+	if (hex) {
+		switch (num) {
+			case 11: num = 37; break;
+			case 13: num = 39; break;
+		}
+	}
+
 	return *(table + num);
 }
 
@@ -76,11 +83,11 @@ uint8_t display::letter(char c) {
 	return *(table + c);
 }
 
-uint8_t *display::message(unsigned char msg[]) {
-	for (uint8_t i = 0; i < strlen((char *)msg); i++)
-		msg[i] = letter(msg[i]);
+uint8_t *display::message(char *msg) {
+	for (uint8_t i = 0; i < strlen(msg); i++)
+		msg[i] = letter(*(msg + i));
 
-	return msg;
+	return (uint8_t *)msg;
 }
 
 #ifdef Arduino_h
@@ -88,9 +95,9 @@ void display::send(uint8_t data) {
 
 }
 
-void display::send(uint8_t data[], uint8_t sleep) {
+void display::send(uint8_t *data, uint8_t sleep) {
 	for (uint8_t i = 0; i < strlen(msg); i++) {
-		send(data[i]);
+		send(*(data + i));
 		delay(sleep);
 	}
 }
@@ -108,14 +115,14 @@ void display::print_table(uint8_t limit, uint8_t s, bool mode) {
 		if (!mode)
 			std::cout << "0b";
 		for (int8_t j = 7; j >= 0; j--) {
-			std::cout << ((*(table + s) >> j) & 1);
+			std::cout << (*(table + s) >> j & 1);
 			if (mode)
 				std::cout << ' ';
 		}
 
 		if (mode) {
 			String start = "0x";
-			if (table[s] <= 0xF)
+			if (*(table + s) <= 0xF)
 				start += '0';
 
 			// Outputs what should be sent for this array member, in hexadecimal
@@ -143,3 +150,7 @@ void display::dev() {
 	print_table(amount, 0 , 0);
 }
 #endif // Arduino_h
+
+displays::displays(display *dps) {
+
+}

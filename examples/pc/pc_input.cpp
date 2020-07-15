@@ -11,7 +11,7 @@ int main() {
 	cout << endl << "Enter a message" << endl;
 	cin >> s;
 
-	uint8_t *msg = A.message((uint8_t *)s);
+	uint8_t *msg = A.message(s);
 	std::cout << std::hex;
 	for (int i = 0; i < strlen((char *)msg); i++)
 		cout << "0x" << +msg[i] << endl;

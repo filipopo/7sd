@@ -5,7 +5,7 @@
 using namespace std;
 
 int main() {
-    #ifndef min_res
+    #ifdef seven_seg
     seven dev(TM1637);
 	cout << "Complete TM1637 table:" << endl;
 	dev.dev();
