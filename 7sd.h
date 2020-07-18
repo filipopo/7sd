@@ -18,7 +18,7 @@
 	#define TM1637 "hgfedcba"
 #endif // seven_seg
 
-#define amount 63
+#define amount 68
 
 class display {
 	uint8_t *table; // Pointer to an array containing conversion values
@@ -32,9 +32,9 @@ class display {
 		void calculate(uint8_t *table);
 	#endif // min_res
 	public:
-		#ifndef Arduino_h
+		#if !defined(Arduino_h) && !defined(min_res)
 		display(); // Default instance which asks you for the options
-		#endif // Arduino_h
+		#endif // !Arduino_h && !min_res
 
 		// Instances with predefined options
 		display(uint8_t *table);
@@ -43,7 +43,7 @@ class display {
 		#endif // min_res
 
         // Converts a number into data that can be sent to the display
-		uint8_t number(uint8_t num, bool hex = 0);
+		uint8_t number(uint8_t num);
         // Converts a letter into data that can be sent to the display
 		uint8_t letter(char c);
         // Converts a string into an array of data that can be sent to the display
@@ -134,14 +134,21 @@ class seven : public display {
 		0b01001000, // x
 		0b01101110, // y
 		0b01001000, // z
+		0b00100010, // "
+		0b00100000, // '
+		0b01001000, // :
+		0b01000000, // -
+		0b00001000, // _
 		0b00000000
-	};
+	}; // https://en.wikipedia.org/wiki/Seven-segment_display_character_representations
 
 	public:
 		seven(String order, String mode = "cathode") : display(order, mode) { calculate(table_7); };
 		#ifndef Arduino_h
 		seven() { calculate(table_7); };
-		#endif
+		#endif // Arduino_h
+
+		uint8_t number(uint8_t num, bool hex = 1);
 };
 #endif // seven_seg && !min_res
 

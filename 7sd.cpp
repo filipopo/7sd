@@ -4,7 +4,7 @@
 	#include <cstring>
 #endif // Arduino_h
 
-#ifndef Arduino_h
+#if !defined(Arduino_h) && !defined(min_res)
 display::display() {
 	std::cout << "Common cathode or anode? ";
 	String mode;
@@ -14,7 +14,7 @@ display::display() {
 	std::cout << "Enter the order: ";
 	std::cin >> order[0] >> order[1] >> order[2] >> order[3] >> order[4] >> order[5] >> order[6] >> order[7];
 }
-#endif // Arduino_h
+#endif // !Arduino_h && !min_res
 
 display::display(uint8_t *table) {
 	this->table = table;
@@ -60,14 +60,7 @@ void display::calculate(uint8_t *table) {
 }
 #endif // min_res
 
-uint8_t display::number(uint8_t num, bool hex) {
-	if (hex) {
-		switch (num) {
-			case 11: num = 37; break;
-			case 13: num = 39; break;
-		}
-	}
-
+uint8_t display::number(uint8_t num) {
 	return *(table + num);
 }
 
@@ -77,8 +70,16 @@ uint8_t display::letter(char c) {
 		c -= 55;
 	else if (c >= 97 && c <= 122)
 		c -= 61;
-	else
-		c = amount - 1;
+	else {
+		switch (c) {
+			case 34: c = 62; break;
+			case 39: c = 63; break;
+			case 58: c = 64; break;
+			case 45: c = 65; break;
+			case 95: c = 66; break;
+			default: c = 67; break; // FixMe, do amount - 1 in the preprocessor
+		}
+	}
 
 	return *(table + c);
 }
@@ -130,12 +131,27 @@ void display::print_table(uint8_t limit, uint8_t s, bool mode) {
 		} else
 			std::cout << ", //";
 
+		// This is ugly but....
 		std::cout << ' ';
-		if (s >= 10 && s <= 35)
-			std::cout << char(s + 55);
-		else if (s >= 36 && s <= 61)
-			std::cout << char(s + 61);
-		else
+		if (s >= 10 && s <= 66) {
+			char c;
+
+			if (s >= 10 && s <= 35)
+				c = s + 55;
+			else if (s >= 36 && s <= 61)
+				c = s + 61;
+			else {
+				switch (s) {
+					case 62: c = 34; break;
+					case 63: c = 39; break;
+					case 64: c = 58; break;
+					case 65: c = 45; break;
+					case 66: c = 95; break;
+				}
+			}
+
+			std::cout << c;
+		} else
 			std::cout << +s;
 
 		std::cout << std::endl;
@@ -150,6 +166,19 @@ void display::dev() {
 	print_table(amount, 0 , 0);
 }
 #endif // Arduino_h
+
+#ifndef min_res
+uint8_t seven::number(uint8_t num, bool hex) {
+	if (hex) {
+		switch (num) {
+			case 11: num = 37; break;
+			case 13: num = 39; break;
+		}
+	}
+
+	return display::number(num);
+}
+#endif // min_res
 
 displays::displays(display *dps) {
 
