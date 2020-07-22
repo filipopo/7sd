@@ -1,16 +1,14 @@
 // Using the library to make a conversion table for the TM1637 7 segment display
 // and linking that table to the display class instead of using any other class
-#include "../../7sd.h"
-
-using namespace std;
+#include <seven.h>
 
 int main() {
-    #ifdef seven_seg
+    #ifndef min_res
     seven dev(TM1637);
-	cout << "Complete TM1637 table:" << endl;
+	std::cout << "Complete TM1637 table:" << std::endl;
 	dev.dev();
-    cout << endl;
-    #endif
+    std::cout << std::endl;
+    #endif // min_res
 
     // Table generated via dev() method
     uint8_t table_tm1637[] = {
@@ -28,5 +26,5 @@ int main() {
 
     display display(table_tm1637);
     std::cout << std::hex;
-    cout << "For the number zero on a tm1637 display send 0x" << +display.number(0) << endl;
+    std::cout << "For the number zero on a tm1637 display send 0x" << +display.number(0) << std::endl;
 }

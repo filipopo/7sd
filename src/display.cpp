@@ -1,5 +1,5 @@
-// 7 segment display configurator cpp file
-#include "7sd.h"
+// Display baseclass source file
+#include "display.h"
 #ifndef Arduino_h
 	#include <cstring>
 #endif // Arduino_h
@@ -26,11 +26,10 @@ display::display(String order, String mode) {
 	this->mode = tolower(mode[0]);
 }
 
-void display::calculate(uint8_t *table) {
-	this->table = table;
-
+void display::calculate() {
 	// Creates a temporary matrix because we don't know the order and need the original one
 	uint8_t table_b[amount];
+
 	for (uint8_t i = 0; i < amount;i++) {
 		table_b[i] = 0;
 		for (uint8_t j = 0; j < 8;j++) {
@@ -97,7 +96,7 @@ void display::send(uint8_t data) {
 }
 
 void display::send(uint8_t *data, uint8_t sleep) {
-	for (uint8_t i = 0; i < strlen(msg); i++) {
+	for (uint8_t i = 0; i < strlen((char *)data); i++) {
 		send(*(data + i));
 		delay(sleep);
 	}
@@ -136,9 +135,9 @@ void display::print_table(uint8_t limit, uint8_t s, bool mode) {
 		if (s >= 10 && s <= 66) {
 			char c;
 
-			if (s >= 10 && s <= 35)
+			if (s <= 35)
 				c = s + 55;
-			else if (s >= 36 && s <= 61)
+			else if (s <= 61)
 				c = s + 61;
 			else {
 				switch (s) {
@@ -166,20 +165,3 @@ void display::dev() {
 	print_table(amount, 0 , 0);
 }
 #endif // Arduino_h
-
-#ifndef min_res
-uint8_t seven::number(uint8_t num, bool hex) {
-	if (hex) {
-		switch (num) {
-			case 11: num = 37; break;
-			case 13: num = 39; break;
-		}
-	}
-
-	return display::number(num);
-}
-#endif // min_res
-
-displays::displays(display *dps) {
-
-}
