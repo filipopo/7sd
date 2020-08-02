@@ -4,10 +4,10 @@
 
 int main() {
     #ifndef min_res
-    seven dev(TM1637);
+	seven dev(TM1637);
 	std::cout << "Complete TM1637 table:" << std::endl;
 	dev.dev();
-    std::cout << std::endl;
+	std::cout << std::endl;
     #endif // min_res
 
     // Table generated via dev() method

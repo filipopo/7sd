@@ -1,6 +1,5 @@
 // Display baseclass header file
-#ifndef display_h
-#define display_h
+#pragma once
 
 #ifndef Arduino_h
 	#include <iostream>
@@ -56,5 +55,3 @@ class display {
 		void dev(); // Prints pseudocode resembling the implementation of the conversion array
 		#endif // Arduino_h
 };
-
-#endif // display_h

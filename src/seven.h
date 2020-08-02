@@ -1,6 +1,5 @@
 // Seven segment specific header file
-#ifndef seven_h
-#define seven_h
+#pragma once
 
 #include "display.h"
 
@@ -94,5 +93,3 @@ class seven : public display {
 		uint8_t number(uint8_t num, bool hex = 1);
 };
 #endif // min_res
-
-#endif // even_h
