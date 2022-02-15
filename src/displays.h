@@ -4,6 +4,6 @@
 #include "display.h"
 
 class displays {
-	public:
-		displays(display *dps);
+  public:
+    displays(display *dps);
 };

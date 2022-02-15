@@ -2,15 +2,17 @@
 #include <seven.h>
 #include <cstring>
 
-int main() {
-	seven A;
-	A.print_table();
-	char s[50];
-	std::cout << std::endl << "Enter a message" << std::endl;
-	std::cin >> s;
+using namespace std;
 
-	uint8_t *msg = A.message(s);
-	std::cout << std::hex;
-	for (int i = 0; i < strlen((char *)msg); i++)
-		std::cout << "0x" << +msg[i] << std::endl;
+int main() {
+  seven A;
+  A.print_table();
+  char s[50];
+  cout << endl << "Enter a message" << endl;
+  cin >> s;
+
+  uint8_t *msg = A.message(s);
+  cout << hex;
+  for (int i = 0; i < strlen((char *)msg); i++)
+    cout << "0x" << + msg[i] << endl;
 }
