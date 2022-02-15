@@ -1,4 +1,4 @@
-// Display baseclass header file
+// Display base class header file
 #pragma once
 
 #ifndef Arduino_h
@@ -13,17 +13,14 @@
   #define TM1637 "hgfedcba"
 #endif // min_res
 
-#define amount 68 // How many characters does this library support
+#define amount 96 // Num of characters does this library support, FixMe: the worst thing I could do
 
 class display {
-  #ifndef min_res
-  String order; // Pin order
-  char mode; // Is the connection a common anode or common cathode type
-  #endif // min_res
-
   protected:
     uint8_t *table; // Pointer to an array containing conversion values
     #ifndef min_res
+    String order; // Pin order
+    char mode; // Is the connection a common anode or common cathode type
     void calculate(); // Updates the table for the given order and mode
     #endif // min_res
   public:
@@ -31,11 +28,8 @@ class display {
     display(); // Default instance which asks you for the options
     #endif // !Arduino_h && !min_res
 
-    // Instances with predefined options
+    // Instance with predefined options
     display(uint8_t *table);
-    #ifndef min_res
-    display(String order, String mode = "cathode");
-    #endif // min_res
 
     // Converts a number into data that can be sent to the display
     uint8_t number(uint8_t num);

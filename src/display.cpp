@@ -21,11 +21,6 @@ display::display(uint8_t *table) {
 }
 
 #ifndef min_res
-display::display(String order, String mode) {
-  this->order = order;
-  this->mode = tolower(mode[0]);
-}
-
 void display::calculate() {
   // Creates a temporary matrix because we don't know the order and need the original one
   uint8_t table_b[amount];
@@ -59,30 +54,26 @@ void display::calculate() {
 }
 #endif // min_res
 
+// Assuming we're mapping numbers over 9 to the alphabet I'm afraid it works up to base 36
 uint8_t display::number(uint8_t num) {
+  // A small price to pay for ascii salvation, the basic functionality is for numbers 0 - 9
+  if (num > 9)
+    num += 7;
+
   return *(table + num);
 }
 
-// A big ascii mess
+// I'm gonna assume anyone who sends ascii 0 - 31 will be happy with gibberish
 uint8_t display::letter(char c) {
-  if (c >= 65 && c <= 90)
-    c -= 55;
-  else if (c >= 97 && c <= 122)
-    c -= 61;
-  else {
-    switch (c) {
-      case 34: c = 62; break;
-      case 39: c = 63; break;
-      case 58: c = 64; break;
-      case 45: c = 65; break;
-      case 95: c = 66; break;
-      default: c = 67; break; // FixMe, do amount - 1 in the preprocessor
-    }
-  }
+  if (c < 48)
+    c += 40;
+  else
+    c -= 48;
 
   return *(table + c);
 }
 
+// Pretty sure this needs to be malloc'd
 uint8_t *display::message(char *msg) {
   for (uint8_t i = 0; i < strlen(msg); i++)
     msg[i] = letter(*(msg + i));
@@ -130,25 +121,14 @@ void display::print_table(uint8_t limit, uint8_t s, bool mode) {
     } else
       std::cout << ", //";
 
-    // This is ugly but....
     std::cout << ' ';
-    if (s >= 10 && s <= 66) {
+    // This can probably be done in a better way but I was dead when I rewrote this
+    if (s > 9) {
       char c;
-
-      if (s <= 35)
-        c = s + 55;
-      else if (s <= 61)
-        c = s + 61;
-      else {
-        switch (s) {
-          case 62: c = 34; break;
-          case 63: c = 39; break;
-          case 64: c = 58; break;
-          case 65: c = 45; break;
-          case 66: c = 95; break;
-        }
-      }
-
+      if (s < 80)
+        c = s + 48;
+      else
+        c = s - 48;
       std::cout << c;
     } else
       std::cout << +s;
