@@ -1,5 +1,5 @@
 // Getting the mode, order and some string from the PC user
-#include <seven.h>
+#include <seven.hpp>
 #include <cstring>
 
 using namespace std;

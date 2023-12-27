@@ -1,5 +1,5 @@
 // Displays source file
-#include "displays.h"
+#include "displays.hpp"
 
 displays::displays(display *dps) {
 

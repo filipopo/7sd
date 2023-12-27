@@ -1,5 +1,5 @@
 // A demonstration of the 7 segment display libray's educative features
-#include <seven.h>
+#include <seven.hpp>
 
 using namespace std;
 

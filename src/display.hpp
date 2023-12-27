@@ -6,27 +6,23 @@
   #define String std::string
 #endif // Arduino_h
 
-//#define min_res // Makes the library bare boned
-
 // Technically because table is a pointer in the display class any other classes aren't necessary
-#ifndef min_res
-  #define TM1637 "hgfedcba"
-#endif // min_res
+#define TM1637 "hgfedcba"
 
 #define amount 96 // Num of characters does this library support, FixMe: the worst thing I could do
 
 class display {
   protected:
     uint8_t *table; // Pointer to an array containing conversion values
-    #ifndef min_res
+
     String order; // Pin order
     char mode; // Is the connection a common anode or common cathode type
+
     void calculate(); // Updates the table for the given order and mode
-    #endif // min_res
   public:
-    #if !defined(Arduino_h) && !defined(min_res)
+    #ifndef Arduino_h
     display(); // Default instance which asks you for the options
-    #endif // !Arduino_h && !min_res
+    #endif // Arduino_h
 
     // Instance with predefined options
     display(uint8_t *table);

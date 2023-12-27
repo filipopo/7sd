@@ -1,10 +1,10 @@
 // Display baseclass source file
-#include "display.h"
+#include "display.hpp"
 #ifndef Arduino_h
   #include <cstring>
 #endif // Arduino_h
 
-#if !defined(Arduino_h) && !defined(min_res)
+#ifndef Arduino_h
 display::display() {
   std::cout << "Common cathode or anode? ";
   String mode;
@@ -12,22 +12,22 @@ display::display() {
   this->mode = tolower(mode[0]);
 
   std::cout << "Enter the order: ";
-  std::cin >> order[0] >> order[1] >> order[2] >> order[3] >> order[4] >> order[5] >> order[6] >> order[7];
+  for (uint8_t i = 0; i < 8; i++)
+    std::cin >> order[i];
 }
-#endif // !Arduino_h && !min_res
+#endif // Arduino_h
 
 display::display(uint8_t *table) {
   this->table = table;
 }
 
-#ifndef min_res
 void display::calculate() {
   // Creates a temporary matrix because we don't know the order and need the original one
   uint8_t table_b[amount];
 
-  for (uint8_t i = 0; i < amount;i++) {
+  for (uint8_t i = 0; i < amount; i++) {
     table_b[i] = 0;
-    for (uint8_t j = 0; j < 8;j++) {
+    for (uint8_t j = 0; j < 8; j++) {
       bool b;
       switch (order[j]) {
         case 'a': b = *(table + i) >> 0 & 1; break;
@@ -45,14 +45,13 @@ void display::calculate() {
         b = !b;
 
       if (b)
-        table_b[i] |= (1 << 7 - j); // Sets the bit on the 7-j position of the B[i] element to 1
+        table_b[i] |= (1 << (7 - j)); // Sets the bit on the 7 - j position to 1
     }
   }
 
   // Copies over our temporary matrix into the real one
   memcpy(table, table_b, sizeof(table_b));
 }
-#endif // min_res
 
 // Assuming we're mapping numbers over 9 to the alphabet I'm afraid it works up to base 36
 uint8_t display::number(uint8_t num) {
@@ -102,7 +101,7 @@ void display::print_table(uint8_t limit, uint8_t s, bool mode) {
     std::cout << std::endl;
   }
 
-  for (s; s < limit; s++) {
+  for (; s < limit; s++) {
     if (!mode)
       std::cout << "0b";
     for (int8_t j = 7; j >= 0; j--) {

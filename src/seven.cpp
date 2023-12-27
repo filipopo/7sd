@@ -1,7 +1,5 @@
 // Seven segment specific source file
-#include "seven.h"
-
-#ifndef min_res
+#include "seven.hpp"
 
 #ifndef Arduino_h
 seven::seven() {
@@ -28,5 +26,3 @@ uint8_t seven::number(uint8_t num) {
 
   return display::number(num);
 }
-
-#endif // min_res

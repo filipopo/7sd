@@ -1,16 +1,14 @@
 // Using the library to make a conversion table for the TM1637 7 segment display
 // and linking that table to the display class instead of using any other class
-#include <seven.h>
+#include <seven.hpp>
 
 using namespace std;
 
 int main() {
-  #ifndef min_res
   seven dev(TM1637);
   cout << "Complete TM1637 table:" << endl;
   dev.dev();
   cout << endl;
-  #endif // min_res
 
   // Table generated via dev() method
   uint8_t table_tm1637[] = {

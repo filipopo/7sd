@@ -1,9 +1,8 @@
 // Seven segment specific header file
 #pragma once
 
-#include "display.h"
+#include "display.hpp"
 
-#ifndef min_res
 class seven : public display {
   //     A
   //    ---
@@ -120,4 +119,3 @@ class seven : public display {
 
     uint8_t number(uint8_t num);
 };
-#endif // min_res
